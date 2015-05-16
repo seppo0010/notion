@@ -141,7 +141,7 @@
                     $colorContainer.addClass('collection');
                     $colorContainer.addClass('color' + index);
                     if (items.main[index]) {
-                        var $item = $(itemTemplate.render(items.main[index]));
+                        var $item = $(itemTemplate.render(items.main[index])).addClass('main');
                         $item.find('.colors').remove();
                         $colorContainer.append($item);
                     }
@@ -245,6 +245,7 @@
         .color4 .selectColor.color4 { border-color: white; }
         .main4 .selectColor.color4, .color4 .selectColor.color4 { background: orange; }
         .selectColor.selected {border-color: white; }
+        #view-mode .main {font-weight: bold;}
         #details { position: fixed; top: 0; bottom: 0; left: 0; right: 0; display: none; background: rgba(255, 255, 255, 0.98); }
         #details #details-container p { text-align: center; line-height: 0%; margin-bottom: 20px; }
         #details #details-container { width: 300px; margin: 20px auto; position: relative; padding-top: 20px; }
