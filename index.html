@@ -4,14 +4,17 @@
         <title>notion</title>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
         <script src="https://twitter.github.com/hogan.js/builds/3.0.1/hogan-3.0.1.js"></script>
+        <!-- JavaScript-MD5 is licensed under MIT license. See https://github.com/blueimp/JavaScript-MD5 -->
+        <script src="js/md5.min.js"></script>
         <script>
-        var items = {selected: {1: [], 2: [], 3: [], 4: []}, main: {}};
+        var items = {selected: {1: [], 2: [], 3: [], 4: []}, main: {}, answer: ''};
         var itemsById = {};
         var mainSeparator = '-';
         var subSeparator = '_';
 
         var updateUrl = function() {
             var data = [];
+            data.push(items.answer);
             data.push(items.main[1] ? items.main[1].id : '')
             data.push(items.main[2] ? items.main[2].id : '')
             data.push(items.main[3] ? items.main[3].id : '')
@@ -55,27 +58,59 @@
             var detailsTemplate = Hogan.compile($('#details-template:first').html());
             var itemTemplate = Hogan.compile($('#item-template:first').html());
 
+            var spanish = 1;
+            var english = 2;
+            var lang = spanish;
+            var clearAnswer = function(answer) {
+                return answer.toLowerCase().replace(/\s*/g, '');
+            };
+
+            var $guessAnswer = $('#guess-answer');
+            $('#try-guess').click(function() {
+                if (!items.answer) {
+                    alert(lang === english ?
+                        'Cannot guess because no answer was provided'
+                        : 'No se puede intentar adivinar porque no se proveyó respuesta');
+                }
+                if (items.answer === md5(clearAnswer($guessAnswer.val()))) {
+                    alert(lang === english ? 'Correct!' : 'Correcto!');
+                } else {
+                    alert(lang === english ? 'Wrong answer :(' : 'Respuesta incorrecta :(');
+                }
+            });
+
+            var $correctAnswer = $('#correct-answer');
+            var updateAnswer = function() {
+                var answer = clearAnswer($correctAnswer.val());
+                items.answer = answer ? md5(answer) : '';
+                updateUrl();
+            };
+            $correctAnswer.bind('blur', updateAnswer);
             var $details = $('#details');
+            var $viewMode = $('#view-mode');
             var $selected = $('#selected');
-            var $items = $('#items');
+            var $editMode = $('#edit-mode');
             $('body').on('click', 'a#details-close', function() {
                 $details.hide();
             });
-            $('#show-all').click(function() {
-                $items.show();
-                $selected.hide();
-            });
+            var showEditMode = function() {
+                $editMode.show();
+                $viewMode.hide();
+            };
+            $('#show-all').click(showEditMode);
             $('#spanish-version').click(function() {
                 $('body').addClass('spanish');
                 $('body').removeClass('english');
+                lang = spanish;
             });
             $('#english-version').click(function() {
                 $('body').removeClass('spanish');
                 $('body').addClass('english');
+                lang = english;
             });
-            $('#show-selected').click(function() {
-                $items.hide();
-                $selected.show();
+            var showViewMode = function() {
+                $editMode.hide();
+                $viewMode.show();
                 $selected.html('');
                 $.each(items.selected, function(index, colorItems) {
                     if (colorItems.length === 0 && !items.main[index]) {
@@ -96,7 +131,8 @@
                     });
                     $selected.append($colorContainer);
                 });
-            });
+            };
+            $('#show-selected').click(showViewMode);
 
             $.get('db.csv', function(data) {
                 var rows = data.trim().split('\n');
@@ -142,12 +178,13 @@
                             addSelected(color, item);
                         }
                     });
-                    $items.append($item)
+                    $editMode.append($item)
                 });
                 var initial = atob(location.hash.substr(1));
                 if (initial) {
                     var data = initial.split(mainSeparator);
                     var pos = 0;
+                    items.answer = data[pos++];
                     setMain(1, itemsById[data[pos++]])
                     setMain(2, itemsById[data[pos++]])
                     setMain(3, itemsById[data[pos++]])
@@ -156,6 +193,9 @@
                     addSelectedArray(2, $.map(data[pos++].split(subSeparator), function(id) { return itemsById[id]; }));
                     addSelectedArray(3, $.map(data[pos++].split(subSeparator), function(id) { return itemsById[id]; }));
                     addSelectedArray(4, $.map(data[pos++].split(subSeparator), function(id) { return itemsById[id]; }));
+                    showViewMode();
+                } else {
+                    showEditMode();
                 }
             });
         });
@@ -163,6 +203,7 @@
         <style>
         @import url("https://necolas.github.io/normalize.css/3.0.2/normalize.css");
         .template { display: none; }
+        #edit-mode, #view-mode { display: none; }
         .item { margin: 10px 0 0 10px; border: 1px solid #000; width: 200px; text-align: left; padding: 10px; float: left; height: 174px; }
         .item .names { float: left; }
         .item .names p { margin: 0; padding: 0; }
@@ -196,6 +237,7 @@
         #stuff { padding: 12px; }
         body.spanish .english { display: none; }
         body.english .spanish { display: none; }
+        .answer-container { margin: 4px 12px; }
         </style>
     </head>
     <body class="spanish">
@@ -225,8 +267,8 @@
             matching cubes to gives clues to particular movies in which
             DiCaprio starred, such as Titanic or Inception.
             </span>
-            <a href="javascript:void(null);" id="show-selected"><span class="spanish">Ver seleccionados</span>&nbsp;<span class="english">View selected</span></a>
-            <a href="javascript:void(null);" id="show-all"><span class="spanish">Ver todos</span>&nbsp;<span class="english">View all</span></a>
+            <a href="javascript:void(null);" id="show-selected"><span class="spanish">Adivinar</span>&nbsp;<span class="english">Guess</span></a>
+            <a href="javascript:void(null);" id="show-all"><span class="spanish">Editar</span>&nbsp;<span class="english">Edit</span></a>
         </div>
         <div id="item-template" class="template">
             <div class="item">
@@ -253,9 +295,18 @@
                 {{/url}}
             </div>
         </div>
-        <div id="items">
+        <div id="edit-mode">
+            <div id="correct-answer-container" class="answer-container">
+                <label for="correct-answer">Correct Answer: <input type="text" id="correct-answer" /></label>
+            </div>
         </div>
-        <div id="selected">
+        <div id="view-mode">
+            <div id="guess-answer-container" class="answer-container">
+                <label for="guess-answer"><input type="text" id="guess-answer" /></label>
+                <input type="button" value="Guess" id="try-guess" />
+            </div>
+            <div id="selected">
+            </div>
         </div>
         <div id="details-template" class="template">
             <div id="details-container">
