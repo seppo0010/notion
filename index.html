@@ -110,36 +110,47 @@
         });
         </script>
         <style>
+        @import url("http://fonts.googleapis.com/css?family=Lato:400,900");
         @import url("https://necolas.github.io/normalize.css/3.0.2/normalize.css");
+            
+        body {background-color:#00BF70; margin-left: 80px; margin-right: 75px; font-family: Lato; color: darkslategray}
+        a {text-decoration: none; color:#3498db;} a:hover{font-weight: bold;}
+        h1 {font-size: 35px; text-align: center;}    
         .template { display: none; }
-        .item { margin: 10px 0 0 10px; border: 1px solid #000; width: 200px; text-align: left; padding: 10px; float: left; height: 174px; }
+        .item { margin: 15px 0 0 15px; border-radius: 15px; background-color: #DFEFF0; width: 200px;text-align: left; padding: 10px; float: left; height: 174px; }
         .item .names { float: left; }
         .item .names p { margin: 0; padding: 0; }
         .item .colors { float: right; }
         .item img { clear: both; max-width: 100px; max-height: 100px; display: block; margin: 10px auto; }
-        .selectColor { display: block; width: 10px; height: 10px; float: left; margin: 2px; border: 2px solid white; border-radius: 100%; }
-        .selectColor.color1.selected.main, .selectColor.color1 { border-color: blue; }
-        .selectColor.color1.main, .selectColor.color1.selected { background: blue; }
-        .selectColor.color2.selected.main, .selectColor.color2 { border-color: red; }
-        .selectColor.color2.main, .selectColor.color2.selected { background: red; }
-        .selectColor.color3.selected.main, .selectColor.color3 { border-color: green; clear: left; }
-        .selectColor.color3.main, .selectColor.color3.selected { background: green; }
-        .selectColor.color4.selected.main, .selectColor.color4 { border-color: orange; }
-        .selectColor.color4.main, .selectColor.color4.selected { background: orange; }
-        .selectColor.selected {border-color: white; }
+            
+        .selectColor { display: block; width: 15px; height: 15px; float: left; margin: 3px; border: 3px solid white; border-radius: 100%; }
+        .selectColor.color1.selected.main, .selectColor.color1 { border-color: #2980b9; }
+        .selectColor.color1.main, .selectColor.color1.selected { background: #2980b9; }
+        .selectColor.color2.selected.main, .selectColor.color2 { border-color: #e74c3c; }
+        .selectColor.color2.main, .selectColor.color2.selected { background: #e74c3c; }
+        .selectColor.color3.selected.main, .selectColor.color3 { border-color: #2ecc71; clear: left; }
+        .selectColor.color3.main, .selectColor.color3.selected { background: #2ecc71; }
+        .selectColor.color4.selected.main, .selectColor.color4 { border-color: #f39c12; }
+        .selectColor.color4.main, .selectColor.color4.selected { background: #f39c12; }
+        .selectColor.selected {border-color: #DFEFF0; }
+            
         #details { position: fixed; top: 0; bottom: 0; left: 0; right: 0; display: none; background: rgba(255, 255, 255, 0.98); }
         #details #details-container p { text-align: center; line-height: 0%; margin-bottom: 20px; }
         #details #details-container { width: 300px; margin: 20px auto; position: relative; padding-top: 20px; }
         #details #details-container img { margin: 20px auto; display: block; }
         #details #details-container #details-close { display: block; position: absolute; right: 0; top: 10px; text-decoration: none; color: black; border: 1px solid black; border-radius: 20%; padding: 2px 6px; }
+            
         .collection { clear: both; }
-        .collection.color1 .item { color: blue; }
-        .collection.color2 .item { color: red; }
-        .collection.color3 .item { color: green; }
-        .collection.color4 .item { color: orange; }
-        #stuff { padding: 12px; }
+        .collection.color1 .item { color: #2980b9; }
+        .collection.color2 .item { color: #e74c3c; }
+        .collection.color3 .item { color: #2ecc71; }
+        .collection.color4 .item { color: #f39c12; }
+            
+        #stuff {background-color: lightyellow; margin-left: 15px; margin-right: 19px; padding: 10px 10px 20px 20px; border-radius: 0px 0px 12px 12px;}
+            
         body.spanish .english { display: none; }
         body.english .spanish { display: none; }
+    
         </style>
     </head>
     <body class="spanish">
