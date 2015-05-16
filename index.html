@@ -5,18 +5,47 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
         <script src="https://twitter.github.com/hogan.js/builds/3.0.1/hogan-3.0.1.js"></script>
         <script>
-        var items = {selected: {1: [], 2: [], 3: [], 4: []}, main: {}};
+        var items = {selected: {1: [], 2: [], 3: [], 4: []}, main: {}, all:{}};
         $(function() {
             var detailsTemplate = Hogan.compile($('#details-template:first').html());
             var itemTemplate = Hogan.compile($('#item-template:first').html());
 
             var $details = $('#details');
+            var $selected = $('#selected');
+            var $items = $('#items');
             $('body').on('click', 'a#details-close', function() {
                 $details.hide();
             });
+            $('#show-all').click(function() {
+                $items.show();
+                $selected.hide();
+            });
+            $('#show-selected').click(function() {
+                $items.hide();
+                $selected.show();
+                $selected.html('');
+                $.each(items.selected, function(index, colorItems) {
+                    if (colorItems.length === 0 && !items.main[index]) {
+                        return;
+                    }
+                    var $colorContainer = $('<div class="collection"></div>');
+                    $colorContainer.addClass('collection');
+                    $colorContainer.addClass('color' + index);
+                    if (items.main[index]) {
+                        var $item = $(itemTemplate.render(items.main[index]));
+                        $item.find('.colors').remove();
+                        $colorContainer.append($item);
+                    }
+                    $.each(colorItems, function(index, item) {
+                        var $item = $(itemTemplate.render(item));
+                        $item.find('.colors').remove();
+                        $colorContainer.append($item);
+                    });
+                    $selected.append($colorContainer);
+                });
+            });
 
             $.get('db.csv', function(data) {
-                var $items = $('#items');
                 var rows = data.trim().split('\n');
                 $.each(rows, function(i, _row) {
                     var id = i + 1;
@@ -33,6 +62,7 @@
                         author: row[2],
                         author_url: row[3],
                     };
+                    items.all[id] = item;
                     var $item = $(itemTemplate.render(item));
                     $item.data(item);
                     $item.find('a.image').click(function() {
@@ -42,22 +72,22 @@
                     $item.find('a.selectColor').click(function(ev) {
                         var $target = $(ev.currentTarget);
                         var color = parseInt($target.data('color'));
-                        if (items.selected[color].indexOf(id) !== -1) {
-                            items.selected[color].splice(items.selected[color].indexOf(id), 1);
+                        if (items.selected[color].indexOf(item) !== -1) {
+                            items.selected[color].splice(items.selected[color].indexOf(item), 1);
                             $target.removeClass('selected');
                             return;
                         }
-                        if (items.main[color] == id) {
+                        if (items.main[color] == item) {
                             delete items.main[color];
                             $target.removeClass('main');
                             return;
                         }
                         if (!items.main[color]) {
-                            items.main[color] = id;
+                            items.main[color] = item;
                             $target.addClass('main');
                             return;
                         }
-                        items.selected[color].push(id);
+                        items.selected[color].push(item);
                         $target.addClass('selected');
                     });
                     $items.append($item)
@@ -88,9 +118,19 @@
         #details #details-container { width: 300px; margin: 20px auto; position: relative; padding-top: 20px; }
         #details #details-container img { margin: 20px auto; display: block; }
         #details #details-container #details-close { display: block; position: absolute; right: 0; top: 10px; text-decoration: none; color: black; border: 1px solid black; border-radius: 20%; padding: 2px 6px; }
+        .collection { clear: both; }
+        .collection.color1 .item { color: blue; }
+        .collection.color2 .item { color: red; }
+        .collection.color3 .item { color: green; }
+        .collection.color4 .item { color: orange; }
+        #stuff { padding: 12px; }
         </style>
     </head>
     <body>
+        <div id="stuff">
+            <a href="javascript:void(null);" id="show-selected">Show selected</a>
+            <a href="javascript:void(null);" id="show-all">Show all</a>
+        </div>
         <div id="item-template" class="template">
             <div class="item">
                 <div class="names">
@@ -110,6 +150,8 @@
             </div>
         </div>
         <div id="items">
+        </div>
+        <div id="selected">
         </div>
         <div id="details-template" class="template">
             <div id="details-container">
