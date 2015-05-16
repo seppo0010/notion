@@ -90,10 +90,25 @@
             var $viewMode = $('#view-mode');
             var $selected = $('#selected');
             var $editMode = $('#edit-mode');
+            var $search = $('#search');
             var $body = $('body:first');
             $body.on('click', 'a#details-close', function() {
                 $details.hide();
             });
+
+            var updateSearch = function() {
+                var term = $search.val().toLowerCase();
+                $.each(itemsById, function(id, item) {
+                    if (term &&
+                            ((item.sp_names.indexOf(term) === -1 && lang !== spanish) ||
+                             (item.en_names.indexOf(term) === -1 && lang !== english))) {
+                        item.$item.hide();
+                    } else {
+                        item.$item.show();
+                    }
+                });
+            };
+            $search.on('keyup', updateSearch);
             var showEditMode = function() {
                 $editMode.show();
                 $viewMode.hide();
@@ -109,6 +124,7 @@
                 } else if (lang === english) {
                     $body.addClass('english');
                 }
+                updateSearch();
             }
             setLanguage(english); // default
             try {
@@ -161,19 +177,21 @@
                     var id = i + 1;
                     var row = _row.split(',');
                     var en_namesString = row[0].split('/');
-                    var en_names = [];
+                    var en_names_obj = [];
                     for (var j = 0; j < en_namesString.length; j++) {
-                        en_names.push({name: en_namesString[j][0].toUpperCase() + en_namesString[j].substr(1)});
+                        en_names_obj.push({name: en_namesString[j][0].toUpperCase() + en_namesString[j].substr(1)});
                     }
                     var sp_namesString = row[1].split('/');
-                    var sp_names = [];
+                    var sp_names_obj = [];
                     for (var j = 0; j < sp_namesString.length; j++) {
-                        sp_names.push({name: sp_namesString[j][0].toUpperCase() + sp_namesString[j].substr(1)});
+                        sp_names_obj.push({name: sp_namesString[j][0].toUpperCase() + sp_namesString[j].substr(1)});
                     }
                     var item = {
                         id: id,
-                        sp_names: sp_names,
-                        en_names: en_names,
+                        sp_names: row[0],
+                        en_names: row[1],
+                        sp_names_obj: sp_names_obj,
+                        en_names_obj: en_names_obj,
                         url: row[2] ? 'images/' + row[2] : '',
                         author: row[3],
                         author_url: row[4],
@@ -247,6 +265,7 @@
         .selectColor.selected {border-color: white; }
         #view-mode .main {font-weight: bold;}
         #details { position: fixed; top: 0; bottom: 0; left: 0; right: 0; display: none; background: rgba(255, 255, 255, 0.98); }
+        #selected { clear: both; }
         #details #details-container p { text-align: center; line-height: 0%; margin-bottom: 20px; }
         #details #details-container { width: 300px; margin: 20px auto; position: relative; padding-top: 20px; }
         #details #details-container img { margin: 20px auto; display: block; }
@@ -260,6 +279,7 @@
         body.spanish .english { display: none; }
         body.english .spanish { display: none; }
         .answer-container { margin: 4px 12px; }
+        #search-container { float: right; margin: 4px 12px; }
         </style>
     </head>
     <body class="spanish english">
@@ -304,14 +324,14 @@
             <div class="item">
                 <div class="names">
                     <div class="spanish">
-                        {{#sp_names}}
+                        {{#sp_names_obj}}
                             <p>{{name}}</p>
-                        {{/sp_names}}
+                        {{/sp_names_obj}}
                     </div>
                     <div class="english">
-                        {{#en_names}}
+                        {{#en_names_obj}}
                             <p>{{name}}</p>
-                        {{/en_names}}
+                        {{/en_names_obj}}
                     </div>
                 </div>
                 <div class="colors">
@@ -326,6 +346,9 @@
             </div>
         </div>
         <div id="edit-mode">
+            <div id="search-container">
+                <input type="text" id="search" placeholder="" />
+            </div>
             <div id="correct-answer-container" class="answer-container">
                 <label for="correct-answer">
                     <span class="english">
@@ -355,14 +378,14 @@
                 <a id="details-close" href="javascript:void(null)">X</a>
                 <div id="details-name">
                     <div class="spanish">
-                        {{#sp_names}}
+                        {{#sp_names_obj}}
                             <p>{{name}}</p>
-                        {{/sp_names}}
+                        {{/sp_names_obj}}
                     </div>
                     <div class="english">
-                        {{#en_names}}
+                        {{#en_names_obj}}
                             <p>{{name}}</p>
-                        {{/en_names}}
+                        {{/en_names_obj}}
                     </div>
                 </div>
                 {{#url}}
