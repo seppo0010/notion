@@ -20,6 +20,14 @@
                 $items.show();
                 $selected.hide();
             });
+            $('#spanish-version').click(function() {
+                $('body').addClass('spanish');
+                $('body').removeClass('english');
+            });
+            $('#english-version').click(function() {
+                $('body').removeClass('spanish');
+                $('body').addClass('english');
+            });
             $('#show-selected').click(function() {
                 $items.hide();
                 $selected.show();
@@ -50,17 +58,23 @@
                 $.each(rows, function(i, _row) {
                     var id = i + 1;
                     var row = _row.split(',');
-                    var namesString = row[0].split('/');
-                    var names = [];
-                    for (var j = 0; j < namesString.length; j++) {
-                        names.push({name: namesString[j][0].toUpperCase() + namesString[j].substr(1)});
+                    var en_namesString = row[0].split('/');
+                    var en_names = [];
+                    for (var j = 0; j < en_namesString.length; j++) {
+                        en_names.push({name: en_namesString[j][0].toUpperCase() + en_namesString[j].substr(1)});
+                    }
+                    var sp_namesString = row[1].split('/');
+                    var sp_names = [];
+                    for (var j = 0; j < sp_namesString.length; j++) {
+                        sp_names.push({name: sp_namesString[j][0].toUpperCase() + sp_namesString[j].substr(1)});
                     }
                     var item = {
                         id: id,
-                        names: names,
-                        url: row[1] ? 'images/' + row[1] : '',
-                        author: row[2],
-                        author_url: row[3],
+                        sp_names: sp_names,
+                        en_names: en_names,
+                        url: row[2] ? 'images/' + row[2] : '',
+                        author: row[3],
+                        author_url: row[4],
                     };
                     items.all[id] = item;
                     var $item = $(itemTemplate.render(item));
@@ -124,10 +138,17 @@
         .collection.color3 .item { color: green; }
         .collection.color4 .item { color: orange; }
         #stuff { padding: 12px; }
+        body.spanish .english { display: none; }
+        body.english .spanish { display: none; }
         </style>
     </head>
-    <body>
+    <body class="spanish">
         <div id="stuff">
+            <p>
+                <a href="javascript:void(null)" class="spanish" id="english-version">English Version</a>
+                <a href="javascript:void(null)" class="english" id="spanish-version">Versi&oacute;n en Espa&ntilde;ol</a>
+            </p>
+            <span class="spanish">
             El objetivo del juego es representar un concepto con una serie de
             iconos.<br />
             Por ejemplo, para que adivinar "leche" se puede elegir como idea
@@ -136,15 +157,34 @@
             se puede usar un concepto principal y sub-conceptos tal como
             pel&iacute;culas en las que actu&oacute; como Titanic e Inception.<br />
             La primer imagen de cada categor&acute;a indica el concepto principal.
-            <a href="javascript:void(null);" id="show-selected">Show selected</a>
-            <a href="javascript:void(null);" id="show-all">Show all</a>
+            </span>
+            <span class="english">
+            To get others to guess "milk", for example, the team might place
+            the question mark icon (which signifies the main concept) on the
+            liquid icon, then cubes of this color on the icons for "food/drink"
+            and "white". For a more complicated concept, such as
+            "Leonardo DiCaprio", the team can use the main concept and its
+            matching cubes to clue players into the hidden phrase being an
+            actor or director, while then using sub-concept icons and their
+            matching cubes to gives clues to particular movies in which
+            DiCaprio starred, such as Titanic or Inception.
+            </span>
+            <a href="javascript:void(null);" id="show-selected"><span class="spanish">Ver seleccionados</span>&nbsp;<span class="english">View selected</span></a>
+            <a href="javascript:void(null);" id="show-all"><span class="spanish">Ver todos</span>&nbsp;<span class="english">View all</span></a>
         </div>
         <div id="item-template" class="template">
             <div class="item">
                 <div class="names">
-                    {{#names}}
-                        <p>{{name}}</p>
-                    {{/names}}
+                    <div class="spanish">
+                        {{#sp_names}}
+                            <p>{{name}}</p>
+                        {{/sp_names}}
+                    </div>
+                    <div class="english">
+                        {{#en_names}}
+                            <p>{{name}}</p>
+                        {{/en_names}}
+                    </div>
                 </div>
                 <div class="colors">
                     <a class="selectColor color1" data-color="1" href="javascript:void(null)"></a>
@@ -165,9 +205,16 @@
             <div id="details-container">
                 <a id="details-close" href="javascript:void(null)">X</a>
                 <div id="details-name">
-                    {{#names}}
-                        <p>{{name}}</p>
-                    {{/names}}
+                    <div class="spanish">
+                        {{#sp_names}}
+                            <p>{{name}}</p>
+                        {{/sp_names}}
+                    </div>
+                    <div class="english">
+                        {{#en_names}}
+                            <p>{{name}}</p>
+                        {{/en_names}}
+                    </div>
                 </div>
                 {{#url}}
                     <img id="details-image" src="{{ url }}" alt="" />
