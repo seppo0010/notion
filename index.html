@@ -90,7 +90,8 @@
             var $viewMode = $('#view-mode');
             var $selected = $('#selected');
             var $editMode = $('#edit-mode');
-            $('body').on('click', 'a#details-close', function() {
+            var $body = $('body:first');
+            $body.on('click', 'a#details-close', function() {
                 $details.hide();
             });
             var showEditMode = function() {
@@ -98,15 +99,35 @@
                 $viewMode.hide();
             };
             $('#show-all').click(showEditMode);
+
+            var setLanguage = function(_lang) {
+                lang = _lang;
+                $body.removeClass('spanish');
+                $body.removeClass('english');
+                if (lang === spanish) {
+                    $body.addClass('spanish');
+                } else if (lang === english) {
+                    $body.addClass('english');
+                }
+            }
+            setLanguage(english); // default
+            try {
+                $.each(window.navigator.languages, function(index, lang) {
+                    if (lang.substr(0, 2) == 'es') {
+                        setLanguage(spanish);
+                        return false;
+                    } else if (lang.substr(0, 2) == 'en') {
+                        setLanguage(english);
+                        return false;
+                    }
+                });
+            } catch (e) { // browser compat stuff?
+            }
             $('#spanish-version').click(function() {
-                $('body').addClass('spanish');
-                $('body').removeClass('english');
-                lang = spanish;
+                setLanguage(spanish)
             });
             $('#english-version').click(function() {
-                $('body').removeClass('spanish');
-                $('body').addClass('english');
-                lang = english;
+                setLanguage(english)
             });
             var showViewMode = function() {
                 $editMode.hide();
@@ -240,7 +261,7 @@
         .answer-container { margin: 4px 12px; }
         </style>
     </head>
-    <body class="spanish">
+    <body class="spanish english">
         <div id="stuff">
             <p>
                 <a href="javascript:void(null)" class="spanish" id="english-version">English Version</a>
