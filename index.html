@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>notion</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+        <script src="https://twitter.github.com/hogan.js/builds/3.0.1/hogan-3.0.1.js"></script>
+        <script>
+        var items = {selected: {1: [], 2: [], 3: [], 4: []}, main: {}};
+        $(function() {
+            var detailsTemplate = Hogan.compile($('#details-template:first').html());
+            var itemTemplate = Hogan.compile($('#item-template:first').html());
+
+            var $details = $('#details');
+            $('body').on('click', 'a#details-close', function() {
+                $details.hide();
+            });
+
+            $.get('db.csv', function(data) {
+                var $items = $('#items');
+                var rows = data.trim().split('\n');
+                $.each(rows, function(i, _row) {
+                    var id = i + 1;
+                    var row = _row.split(',');
+                    var namesString = row[0].split('/');
+                    var names = [];
+                    for (var j = 0; j < namesString.length; j++) {
+                        names.push({name: namesString[j][0].toUpperCase() + namesString[j].substr(1)});
+                    }
+                    var item = {
+                        id: id,
+                        names: names,
+                        url: row[1] ? 'images/' + row[1] : '',
+                        author: row[2],
+                        author_url: row[3],
+                    };
+                    var $item = $(itemTemplate.render(item));
+                    $item.data(item);
+                    $item.find('a.image').click(function() {
+                        $details.show();
+                        $details.html(detailsTemplate.render(item));
+                    });
+                    $item.find('a.selectColor').click(function(ev) {
+                        var $target = $(ev.currentTarget);
+                        var color = parseInt($target.data('color'));
+                        if (items.selected[color].indexOf(id) !== -1) {
+                            items.selected[color].splice(items.selected[color].indexOf(id), 1);
+                            $target.removeClass('selected');
+                            return;
+                        }
+                        if (items.main[color] == id) {
+                            delete items.main[color];
+                            $target.removeClass('main');
+                            return;
+                        }
+                        if (!items.main[color]) {
+                            items.main[color] = id;
+                            $target.addClass('main');
+                            return;
+                        }
+                        items.selected[color].push(id);
+                        $target.addClass('selected');
+                    });
+                    $items.append($item)
+                });
+            });
+        });
+        </script>
+        <style>
+        @import url("https://necolas.github.io/normalize.css/3.0.2/normalize.css");
+        .template { display: none; }
+        .item { margin: 10px 0 0 10px; border: 1px solid #000; width: 200px; text-align: left; padding: 10px; float: left; height: 174px; }
+        .item .names { float: left; }
+        .item .names p { margin: 0; padding: 0; }
+        .item .colors { float: right; }
+        .item img { clear: both; max-width: 100px; max-height: 100px; display: block; margin: 10px auto; }
+        .selectColor { display: block; width: 10px; height: 10px; float: left; margin: 2px; border: 2px solid white; border-radius: 100%; }
+        .selectColor.color1.selected.main, .selectColor.color1 { border-color: blue; }
+        .selectColor.color1.main, .selectColor.color1.selected { background: blue; }
+        .selectColor.color2.selected.main, .selectColor.color2 { border-color: red; }
+        .selectColor.color2.main, .selectColor.color2.selected { background: red; }
+        .selectColor.color3.selected.main, .selectColor.color3 { border-color: green; clear: left; }
+        .selectColor.color3.main, .selectColor.color3.selected { background: green; }
+        .selectColor.color4.selected.main, .selectColor.color4 { border-color: orange; }
+        .selectColor.color4.main, .selectColor.color4.selected { background: orange; }
+        .selectColor.selected {border-color: white; }
+        #details { position: fixed; top: 0; bottom: 0; left: 0; right: 0; display: none; background: rgba(255, 255, 255, 0.98); }
+        #details #details-container p { text-align: center; line-height: 0%; margin-bottom: 20px; }
+        #details #details-container { width: 300px; margin: 20px auto; position: relative; padding-top: 20px; }
+        #details #details-container img { margin: 20px auto; display: block; }
+        #details #details-container #details-close { display: block; position: absolute; right: 0; top: 10px; text-decoration: none; color: black; border: 1px solid black; border-radius: 20%; padding: 2px 6px; }
+        </style>
+    </head>
+    <body>
+        <div id="item-template" class="template">
+            <div class="item">
+                <div class="names">
+                    {{#names}}
+                        <p>{{name}}</p>
+                    {{/names}}
+                </div>
+                <div class="colors">
+                    <a class="selectColor color1" data-color="1" href="javascript:void(null)"></a>
+                    <a class="selectColor color2" data-color="2" href="javascript:void(null)"></a>
+                    <a class="selectColor color3" data-color="3" href="javascript:void(null)"></a>
+                    <a class="selectColor color4" data-color="4" href="javascript:void(null)"></a>
+                </div>
+                {{#url}}
+                    <a href="javascript:void(null)" class="image"><img src="{{url}}" alt="{{name}}" /></a>
+                {{/url}}
+            </div>
+        </div>
+        <div id="items">
+        </div>
+        <div id="details-template" class="template">
+            <div id="details-container">
+                <a id="details-close" href="javascript:void(null)">X</a>
+                <div id="details-name">
+                    {{#names}}
+                        <p>{{name}}</p>
+                    {{/names}}
+                </div>
+                {{#url}}
+                    <img id="details-image" src="{{ url }}" alt="" />
+                {{/url}}
+                <div>
+                    Icon made by
+                    <a href="{{ author_url }}" title="{{ author }}">{{ author }}</a>
+                    from
+                    <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a>
+                    is licensed under
+                    <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a>
+                </div>
+            </div>
+        </div>
+        <div id="details">
+        </div>
+    </body>
+</html>
