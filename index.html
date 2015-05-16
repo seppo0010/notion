@@ -66,7 +66,7 @@
             };
 
             var $guessAnswer = $('#guess-answer');
-            $('#try-guess').click(function() {
+            $('.try-guess').click(function() {
                 if (!items.answer) {
                     alert(lang === english ?
                         'Cannot guess because no answer was provided'
@@ -297,13 +297,21 @@
         </div>
         <div id="edit-mode">
             <div id="correct-answer-container" class="answer-container">
-                <label for="correct-answer">Correct Answer: <input type="text" id="correct-answer" /></label>
+                <label for="correct-answer">
+                    <span class="english">
+                        Correct Answer:
+                    </span>
+                    <span class="spanish">
+                        Respuesta Correcta:
+                    </span>
+                <input type="text" id="correct-answer" /></label>
             </div>
         </div>
         <div id="view-mode">
             <div id="guess-answer-container" class="answer-container">
                 <label for="guess-answer"><input type="text" id="guess-answer" /></label>
-                <input type="button" value="Guess" id="try-guess" />
+                <input type="button" value="Guess" class="try-guess" class="english" />
+                <input type="button" value="Adivinar" class="try-guess" class="english" />
             </div>
             <div id="selected">
             </div>
