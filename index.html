@@ -5,7 +5,52 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
         <script src="https://twitter.github.com/hogan.js/builds/3.0.1/hogan-3.0.1.js"></script>
         <script>
-        var items = {selected: {1: [], 2: [], 3: [], 4: []}, main: {}, all:{}};
+        var items = {selected: {1: [], 2: [], 3: [], 4: []}, main: {}};
+        var itemsById = {};
+        var mainSeparator = '-';
+        var subSeparator = '_';
+
+        var updateUrl = function() {
+            var data = [];
+            data.push(items.main[1] ? items.main[1].id : '')
+            data.push(items.main[2] ? items.main[2].id : '')
+            data.push(items.main[3] ? items.main[3].id : '')
+            data.push(items.main[4] ? items.main[4].id : '')
+            data.push($.map(items.selected[1], function(i) { return i.id; }).join(subSeparator))
+            data.push($.map(items.selected[2], function(i) { return i.id; }).join(subSeparator))
+            data.push($.map(items.selected[3], function(i) { return i.id; }).join(subSeparator))
+            data.push($.map(items.selected[4], function(i) { return i.id; }).join(subSeparator))
+            location.href = '#' + btoa(data.join(mainSeparator));
+        };
+
+        var setMain = function(color, item) {
+            if (!item) {
+                return;
+            }
+            items.main[color] = item;
+            item.$item.addClass('main' + color);
+            updateUrl();
+        };
+        var unsetMain = function(color) {
+            items.main[color].$item.removeClass('main' + color);
+            delete items.main[color];
+            updateUrl();
+        };
+        var addSelected = function(color, item) {
+            items.selected[color].push(item);
+            item.$item.addClass('color' + color);
+            updateUrl();
+        };
+        var removeSelected = function(color, item) {
+            items.selected[color].splice(items.selected[color].indexOf(item), 1);
+            item.$item.removeClass('color' + color);
+            updateUrl();
+        };
+        var addSelectedArray = function(color, items) {
+            $.each(items, function(index, item) {
+                addSelected(color, item);
+            });
+        };
         $(function() {
             var detailsTemplate = Hogan.compile($('#details-template:first').html());
             var itemTemplate = Hogan.compile($('#item-template:first').html());
@@ -76,8 +121,9 @@
                         author: row[3],
                         author_url: row[4],
                     };
-                    items.all[id] = item;
+                    itemsById[id] = item;
                     var $item = $(itemTemplate.render(item));
+                    item.$item = $item;
                     $item.data(item);
                     $item.find('a.image').click(function() {
                         $details.show();
@@ -87,25 +133,30 @@
                         var $target = $(ev.currentTarget);
                         var color = parseInt($target.data('color'));
                         if (items.selected[color].indexOf(item) !== -1) {
-                            items.selected[color].splice(items.selected[color].indexOf(item), 1);
-                            $target.removeClass('selected');
-                            return;
+                            removeSelected(color, item);
+                        } else if (items.main[color] == item) {
+                            unsetMain(color);
+                        } else if (!items.main[color]) {
+                            setMain(color, item);
+                        } else {
+                            addSelected(color, item);
                         }
-                        if (items.main[color] == item) {
-                            delete items.main[color];
-                            $target.removeClass('main');
-                            return;
-                        }
-                        if (!items.main[color]) {
-                            items.main[color] = item;
-                            $target.addClass('main');
-                            return;
-                        }
-                        items.selected[color].push(item);
-                        $target.addClass('selected');
                     });
                     $items.append($item)
                 });
+                var initial = atob(location.hash.substr(1));
+                if (initial) {
+                    var data = initial.split(mainSeparator);
+                    var pos = 0;
+                    setMain(1, itemsById[data[pos++]])
+                    setMain(2, itemsById[data[pos++]])
+                    setMain(3, itemsById[data[pos++]])
+                    setMain(4, itemsById[data[pos++]])
+                    addSelectedArray(1, $.map(data[pos++].split(subSeparator), function(id) { return itemsById[id]; }));
+                    addSelectedArray(2, $.map(data[pos++].split(subSeparator), function(id) { return itemsById[id]; }));
+                    addSelectedArray(3, $.map(data[pos++].split(subSeparator), function(id) { return itemsById[id]; }));
+                    addSelectedArray(4, $.map(data[pos++].split(subSeparator), function(id) { return itemsById[id]; }));
+                }
             });
         });
         </script>
@@ -118,14 +169,19 @@
         .item .colors { float: right; }
         .item img { clear: both; max-width: 100px; max-height: 100px; display: block; margin: 10px auto; }
         .selectColor { display: block; width: 10px; height: 10px; float: left; margin: 2px; border: 2px solid white; border-radius: 100%; }
-        .selectColor.color1.selected.main, .selectColor.color1 { border-color: blue; }
-        .selectColor.color1.main, .selectColor.color1.selected { background: blue; }
-        .selectColor.color2.selected.main, .selectColor.color2 { border-color: red; }
-        .selectColor.color2.main, .selectColor.color2.selected { background: red; }
-        .selectColor.color3.selected.main, .selectColor.color3 { border-color: green; clear: left; }
-        .selectColor.color3.main, .selectColor.color3.selected { background: green; }
-        .selectColor.color4.selected.main, .selectColor.color4 { border-color: orange; }
-        .selectColor.color4.main, .selectColor.color4.selected { background: orange; }
+        .main1 .selectColor.color1, .selectColor.color1 { border-color: blue; }
+        .color1 .selectColor.color1 { border-color: white; }
+        .main1 .selectColor.color1, .color1 .selectColor.color1 { background: blue; }
+        .main2 .selectColor.color2, .selectColor.color2 { border-color: red; }
+        .color2 .selectColor.color2 { border-color: white; }
+        .main2 .selectColor.color2, .color2 .selectColor.color2 { background: red; }
+        .selectColor.color3 { clear: both; }
+        .main3 .selectColor.color3, .selectColor.color3 { border-color: green; }
+        .color3 .selectColor.color3 { border-color: white; }
+        .main3 .selectColor.color3, .color3 .selectColor.color3 { background: green; }
+        .main4 .selectColor.color4, .selectColor.color4 { border-color: orange; }
+        .color4 .selectColor.color4 { border-color: white; }
+        .main4 .selectColor.color4, .color4 .selectColor.color4 { background: orange; }
         .selectColor.selected {border-color: white; }
         #details { position: fixed; top: 0; bottom: 0; left: 0; right: 0; display: none; background: rgba(255, 255, 255, 0.98); }
         #details #details-container p { text-align: center; line-height: 0%; margin-bottom: 20px; }
@@ -217,7 +273,7 @@
                     </div>
                 </div>
                 {{#url}}
-                    <img id="details-image" src="{{ url }}" alt="" />
+                    <img id="details-image" src="{{url}}" alt="" />
                 {{/url}}
                 <div>
                     Icon made by
