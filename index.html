@@ -72,8 +72,7 @@
                     alert(lang === english ?
                         'Cannot guess because no answer was provided'
                         : 'No se puede intentar adivinar porque no se proveyó respuesta');
-                }
-                if (items.answer === md5(clearAnswer($guessAnswer.val()))) {
+                } else if (items.answer === md5(clearAnswer($guessAnswer.val()))) {
                     alert(lang === english ? 'Correct!' : 'Correcto!');
                 } else {
                     alert(lang === english ? 'Wrong answer :(' : 'Respuesta incorrecta :(');
@@ -92,6 +91,8 @@
             var $selected = $('#selected');
             var $editMode = $('#edit-mode');
             var $search = $('#search');
+            var $showSelected = $('#show-selected');
+            var $showAll = $('#show-all');
             var $body = $('body:first');
             $body.on('click', 'a#details-close', function() {
                 $details.hide();
@@ -113,6 +114,8 @@
             var showEditMode = function() {
                 $editMode.show();
                 $viewMode.hide();
+                $showSelected.show();
+                $showAll.hide();
             };
             $('#show-all').click(showEditMode);
 
@@ -171,8 +174,10 @@
                     });
                     $selected.append($colorContainer);
                 });
+                $showSelected.hide();
+                $showAll.show();
             };
-            $('#show-selected').click(showViewMode);
+            $showSelected.click(showViewMode);
 
             $.get('db.csv', function(data) {
                 var rows = data.trim().split('\n');
@@ -243,49 +248,60 @@
         });
         </script>
         <style>
+        @import url("http://fonts.googleapis.com/css?family=Lato:400,900");
         @import url("https://necolas.github.io/normalize.css/3.0.2/normalize.css");
+
+        body {background-color:#2C3E50; margin-left: 80px; margin-right: 75px; font-family: Lato; color: darkslategray}
+        a {text-decoration: none; color:#3498db;}
+        h1 {font-size: 35px; text-align: center;}
         .template { display: none; }
-        .main-container { display: none; width: 928px; margin: 0 auto; }
-        .item { margin: 10px 0 0 10px; border: 1px solid #000; width: 200px; text-align: left; padding: 10px; float: left; height: 174px; }
+        .main-container { display: none; width: 940px; margin: 0 auto; }
+        .item { margin: 10px 10px 0 0;border-radius: 25px; background-color: #EAD98B; width: 200px; text-align: left; padding: 10px; float: left; height: 174px; }
         .item .names { float: left; }
         .item .names p { margin: 0; padding: 0; }
         .item .colors { float: right; }
         .item img { clear: both; max-width: 100px; max-height: 100px; display: block; margin: 10px auto; }
-        .selectColor { display: block; width: 10px; height: 10px; float: left; margin: 2px; border: 2px solid white; border-radius: 100%; }
-        .main1 .selectColor.color1, .selectColor.color1 { border-color: blue; }
-        .color1 .selectColor.color1 { border-color: white; }
-        .main1 .selectColor.color1, .color1 .selectColor.color1 { background: blue; }
-        .main2 .selectColor.color2, .selectColor.color2 { border-color: red; }
-        .color2 .selectColor.color2 { border-color: white; }
-        .main2 .selectColor.color2, .color2 .selectColor.color2 { background: red; }
+        .selectColor { display: block; width: 10px; height: 10px; float: left; margin: 2px; border: 2px solid #EAD98B; border-radius: 100%; }
+        .main1 .selectColor.color1, .selectColor.color1 { border-color: #2980b9; }
+        .color1 .selectColor.color1 { border-color: #EAD98B; }
+        .main1 .selectColor.color1, .color1 .selectColor.color1 { background: #2980b9; }
+        .main2 .selectColor.color2, .selectColor.color2 { border-color: #DA4453; }
+        .color2 .selectColor.color2 { border-color: #EAD98B; }
+        .main2 .selectColor.color2, .color2 .selectColor.color2 { background: #DA4453; }
         .selectColor.color3 { clear: both; }
-        .main3 .selectColor.color3, .selectColor.color3 { border-color: green; }
-        .color3 .selectColor.color3 { border-color: white; }
-        .main3 .selectColor.color3, .color3 .selectColor.color3 { background: green; }
-        .main4 .selectColor.color4, .selectColor.color4 { border-color: orange; }
-        .color4 .selectColor.color4 { border-color: white; }
-        .main4 .selectColor.color4, .color4 .selectColor.color4 { background: orange; }
-        .selectColor.selected {border-color: white; }
+        .main3 .selectColor.color3, .selectColor.color3 { border-color: #3D9970; }
+        .color3 .selectColor.color3 { border-color: #EAD98B; }
+        .main3 .selectColor.color3, .color3 .selectColor.color3 { background: #3D9970; }
+        .main4 .selectColor.color4, .selectColor.color4 { border-color: #5F0E54; }
+        .color4 .selectColor.color4 { border-color: #EAD98B; }
+        .main4 .selectColor.color4, .color4 .selectColor.color4 { background: #5F0E54; }
+        .selectColor.selected {border-color: #EAD98B; }
         #view-mode .main {font-weight: bold;}
+        #guess-answer-container, #correct-answer-container { margin: 12px 0 12px 10px; }
+        #correct-answer-container label { color: #EAD98B; }
         #details { position: fixed; top: 0; bottom: 0; left: 0; right: 0; display: none; background: rgba(255, 255, 255, 0.98); }
         #selected { clear: both; }
         #details #details-container p { text-align: center; line-height: 0%; margin-bottom: 20px; }
         #details #details-container { width: 300px; margin: 20px auto; position: relative; padding-top: 20px; }
         #details #details-container img { margin: 20px auto; display: block; }
         #details #details-container #details-close { display: block; position: absolute; right: 0; top: 10px; text-decoration: none; color: black; border: 1px solid black; border-radius: 20%; padding: 2px 6px; }
+
         .collection { clear: both; }
-        .collection.color1 .item { color: blue; }
-        .collection.color2 .item { color: red; }
-        .collection.color3 .item { color: green; }
-        .collection.color4 .item { color: orange; }
-        #stuff { padding: 12px; width:904px; margin: 0 auto; }
+
+        .collection.color1 .item { color: #2980b9; }
+        .collection.color2 .item { color: #DA4453; }
+        .collection.color3 .item { color: #3D9970; }
+        .collection.color4 .item { color: #5F0E54; }
+        #top-stuff { width:910px; margin: 0 auto; padding: 0 30px 0 0; }
+        #stuff { padding: 10px; background-color: lightyellow; border-radius: 0px 0px 12px 12px; }
         body.spanish .english { display: none; }
         body.english .spanish { display: none; }
         .answer-container { margin: 4px 12px; }
-        #search-container { float: right; margin: 0; }
+        #search-container { float: right; margin: 0 30px 0 0; }
         </style>
     </head>
     <body class="spanish english">
+        <div id="top-stuff">
         <div id="stuff">
             <p>
                 <a href="javascript:void(null)" class="spanish" id="english-version">English Version</a>
@@ -319,9 +335,10 @@
             If you like this game, I recommend you to get a copy. I sure got mine!
             </span>
             <div>
-            <a href="javascript:void(null);" id="show-selected"><span class="spanish">Adivinar</span><span class="english">Guess</span></a>
-            <a href="javascript:void(null);" id="show-all"><span class="spanish">Editar</span><span class="english">Edit</span></a>
+            <a href="javascript:void(null);" id="show-selected"><span class="spanish">Modo Adivinar</span><span class="english">Guess Mode</span></a>
+            <a href="javascript:void(null);" id="show-all"><span class="spanish">Modo Editar</span><span class="english">Edit Mode</span></a>
             </div>
+        </div>
         </div>
         <div id="item-template" class="template">
             <div class="item">
@@ -360,7 +377,8 @@
                     <span class="spanish">
                         Respuesta Correcta:
                     </span>
-                <input type="text" id="correct-answer" /></label>
+                </label>
+                <input type="text" id="correct-answer" />
             </div>
         </div>
         <div id="view-mode" class="main-container">
