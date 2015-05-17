@@ -121,8 +121,10 @@
                 $body.removeClass('english');
                 if (lang === spanish) {
                     $body.addClass('spanish');
+                    $search.attr('placeholder', 'Buscar...');
                 } else if (lang === english) {
                     $body.addClass('english');
+                    $search.attr('placeholder', 'Search...');
                 }
                 updateSearch();
             }
@@ -242,7 +244,7 @@
         <style>
         @import url("https://necolas.github.io/normalize.css/3.0.2/normalize.css");
         .template { display: none; }
-        #edit-mode, #view-mode { display: none; }
+        .main-container { display: none; width: 928px; margin: 0 auto; }
         .item { margin: 10px 0 0 10px; border: 1px solid #000; width: 200px; text-align: left; padding: 10px; float: left; height: 174px; }
         .item .names { float: left; }
         .item .names p { margin: 0; padding: 0; }
@@ -275,11 +277,11 @@
         .collection.color2 .item { color: red; }
         .collection.color3 .item { color: green; }
         .collection.color4 .item { color: orange; }
-        #stuff { padding: 12px; }
+        #stuff { padding: 12px; width:904px; margin: 0 auto; }
         body.spanish .english { display: none; }
         body.english .spanish { display: none; }
         .answer-container { margin: 4px 12px; }
-        #search-container { float: right; margin: 4px 12px; }
+        #search-container { float: right; margin: 0; }
         </style>
     </head>
     <body class="spanish english">
@@ -345,7 +347,7 @@
                 {{/url}}
             </div>
         </div>
-        <div id="edit-mode">
+        <div id="edit-mode" class="main-container">
             <div id="search-container">
                 <input type="text" id="search" placeholder="" />
             </div>
@@ -360,7 +362,7 @@
                 <input type="text" id="correct-answer" /></label>
             </div>
         </div>
-        <div id="view-mode">
+        <div id="view-mode" class="main-container">
             <div id="guess-answer-container" class="answer-container">
                 <label for="guess-answer"><input type="text" id="guess-answer" /></label>
                 <span class="english">
