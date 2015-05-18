@@ -180,6 +180,7 @@
             $showSelected.click(showViewMode);
 
             $.get('db.csv', function(data) {
+                showEditMode();
                 var rows = data.trim().split('\n');
                 $.each(rows, function(i, _row) {
                     var id = i + 1;
@@ -241,8 +242,6 @@
                     addSelectedArray(3, $.map(data[pos++].split(subSeparator), function(id) { return itemsById[id]; }));
                     addSelectedArray(4, $.map(data[pos++].split(subSeparator), function(id) { return itemsById[id]; }));
                     showViewMode();
-                } else {
-                    showEditMode();
                 }
             });
         });
