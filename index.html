@@ -255,11 +255,12 @@
         h1 {font-size: 35px; text-align: center;}
         .template { display: none; }
         .main-container { display: none; width: 940px; margin: 0 auto; }
-        .item { margin: 10px 10px 0 0;border-radius: 10px; background-color: #EAD98B; width: 200px; text-align: left; padding: 10px; float: left; height: 174px; }
+        .item { margin: 10px 10px 0 0;border-radius: 10px; background-color: #EAD98B; width: 200px; text-align: left; padding: 10px; float: left; height: 174px; position: relative; }
         .item .names { float: left; }
         .item .names p { margin: 0; padding: 0; }
         .item .colors { float: right; }
-        .item img { clear: both; max-width: 100px; max-height: 100px; display: block; margin: 10px auto; }
+        .item .image { position: absolute; top: 50%; left: 50%; }
+        .item .image img { clear: both; max-width: 100px; max-height: 100px; display: block; margin-top: -50%; margin-left: -50%; }
         .selectColor { display: block; width: 10px; height: 10px; float: left; margin: 2px; border: 2px solid #EAD98B; border-radius: 100%; }
         .main1 .selectColor.color1, .selectColor.color1 { border-color: #2980b9; }
         .color1 .selectColor.color1 { border-color: #EAD98B; }

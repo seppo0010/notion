@@ -1,4 +1,4 @@
-object/thing/package,objeto/cosa/paquete,31821.png,Freepik,http://www.freepik.com
+object/package/thing,objeto/paquete/cosa,31821.png,Freepik,http://www.freepik.com
 person/family/group,persona/familia/grupo,56950.png,Freepik,http://www.freepik.com
 woman/wife/female,mujer/esposa/femenino,34353.png,SimpleIcon,http://www.simpleicon.com
 man/husband/masculine,hombre/esposo/masculino,33551.png,SimpleIcon,http://www.simpleicon.com
@@ -8,12 +8,12 @@ fauna/animal,fauna/animal,64431.png,Freepik,http://www.freepik.com
 flora/nature/plant,flora/naturaleza/planta,71199.png,Freepik,http://www.freepik.com
 literature/writing/book,literatura/escritura/libro,67762.png,Freepik,http://www.freepik.com
 music/song/note,música/canción/nota,402.png,Freepik,http://www.freepik.com
-theater/movie/camera,teatro/película/cámara,68976.png,Freepik,http://www.freepik.com
+theater/camera/movie,película/cámara/teatro,68976.png,Freepik,http://www.freepik.com
 art/sculpture/painting/design,arte/escultura/pintura/diseño,56830.png,Freepik,http://www.freepik.com
 television/show/series,televisión/programa/serie,21392.png,Freepik,http://www.freepik.com
 title/brand/name,título/marca/nombre,33346.png,Freepik,http://www.freepik.com
 idea/thought/concept,idea/pensamiento/concepto,53591.png,Freepik,http://www.freepik.com
-expression/language/comics,expresión/lenguaje/historietas,76253.png,Freepik,http://www.freepik.com
+expression/language/comics,expresión/historietas/lengua,76253.png,Freepik,http://www.freepik.com
 place/nation/flag,lugar/nación/bandera,23370.png,TutsPlus,http://tutsplus.com
 building/construction/city,edificio/contrucción/ciudad,24670.png,Freepik,http://www.freepik.com
 date/event/day,fecha/evento/día,4430.png,Designmodo,http://www.designmodo.com
@@ -24,7 +24,7 @@ land vehicle/car/turn,vehículo terrestre/auto/girar,48292.png,Icons8,http://www
 tools/construction,herramientas/construcción,32025.png,Freepik,http://www.freepik.com
 game/toy/youth,juego/juguete/juventud,47577.png,Freepik,http://www.freepik.com
 clothing/accesory/costume,ropa/accesorio/disfraz,26487.png,Freepik,http://www.freepik.com
-food/edible,comida/alimento/comestible,66681.png,Freepik,http://www.freepik.com
+food/edible,alimento/comestible/comida,66681.png,Freepik,http://www.freepik.com
 house/interior/domestic,casa/interior/doméstico,48781.png,Freepik,http://www.freepik.com
 reality/historical,realidad/histórico,36521.png,Freepik,http://www.freepik.com
 fictional/imaginary/wish,ficción/imaginario/deseo,71259.png,Freepik,http://www.freepik.com
@@ -35,7 +35,7 @@ fast/exuberante/hare,véloz/exuberante/liebre,74201.png,Freepik,http://www.freep
 defense/protection/wall,defensa/protección/muro,76885.png,Freepik,http://www.freepik.com
 conflict/weapon/fight,conflicto/arma/lucha,68207.png,Freepik,http://www.freepik.com
 life/heart/love,vida/corazón/amor,33328.png,Freepik,http://www.freepik.com
-death/bad/disease,muerte/malo/enfermedad,73386.png,Freepik,http://www.freepik.com
+death/disease/bad,muerte/enfermedad/malo,73386.png,Freepik,http://www.freepik.com
 joy/positive,alegre/positivo,75482.png,Freepik,http://www.freepik.com
 sad/negative,triste/negativo,75530.png,Freepik,http://www.freepik.com
 electronics/computers,electrónica/computación,34100.png,SimpleIcon,http://www.simpleicon.com
@@ -44,7 +44,7 @@ money/rich/expensive,dinero/rico/costoso,66337.png,Freepik,http://www.freepik.co
 time/duration,tiempo/duración,62834.png,Freepik,http://www.freepik.com
 religion/myth/creed,religión/mito/credo,1845.png,Freepik,http://www.freepik.com
 power/politics,poder/política,43361.png,Freepik,http://www.freepik.com
-science/math/chemistry,ciencia/matemática/química,43193.png,Freepik,http://www.freepik.com
+science/chemistry/math,matemática/química/ciencia,43193.png,Freepik,http://www.freepik.com
 medicine/farmacy/care,medicina/farmacia/cuidado,73845.png,Freepik,http://www.freepik.com
 head/face,cabeza/rostro,1247.png,Freepik,http://www.freepik.com
 arm/hand,brazo/mano,68865.png,Freepik,http://www.freepik.com
@@ -79,7 +79,7 @@ unity/one,unidad/uno,56735.png,Alessio Atzeni,http://www.alessioatzeni.com
 straight line/ascending,línea recta/derecho/ascenso,43694.png,Freepik,http://www.freepik.com
 curve/arc/round,curva/arco/redondeado,33302.png,Freepik,http://www.freepik.com
 cross/intersection/sum,cruz/intersección/suma,43869.png,Freepik,http://www.freepik.com
-broken line/abrupt/inconstant,recta quebrada/brusco/inconstante,43382.png,Freepik,http://www.freepik.com
+broken line/abrupt/inconstant,recta quebrada/inconstante/brusco,43382.png,Freepik,http://www.freepik.com
 spiral/madness/wrap,espiral/locura/envolver,67778.png,Freepik,http://www.freepik.com
 sinusoidal/wavy/hair,sinusoidal/ondulado/pelo,2500.png,Stephen Hutchings,http://www.typicons.com
 ring/cycle,anillo/cíclo,3488.png,Daniel Bruce,http://www.danielbruce.se
@@ -96,7 +96,7 @@ cone,cono,43297.png,Freepik,http://www.freepik.com
 hollow/hole/perforated,hueco/agujero/perforado,52773.png,Freepik,http://www.freepik.com
 tall/big/high,alto/grande/elevado,54436.png,Catalin Fertu,http://catalinfertu.com
 short/small/low,bajo/pequeño/inferior
-huge/large/big,enorme/largo/grande,76297.png,Freepik,http://www.freepik.com
+huge/large/big,enorme/grande/largo,76297.png,Freepik,http://www.freepik.com
 tiny/narrow/small,pequeño/estrecho/corto,76304.png,Freepik,http://www.freepik.com
 above/up,superior/sobre/arriba,60723.png,Google,http://www.google.com
 below/down,inferior/debajo/bajo,62055.png,Freepik,http://www.freepik.com
