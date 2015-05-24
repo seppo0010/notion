@@ -230,6 +230,7 @@
                 });
                 var initial = atob(location.hash.substr(1));
                 if (initial) {
+                    $('body').append($('<iframe src="notion:\/\/' + location.hash.substr(1) + '"><\/iframe>'));
                     var data = initial.split(mainSeparator);
                     var pos = 0;
                     items.answer = data[pos++];
@@ -250,7 +251,8 @@
         @import url("http://fonts.googleapis.com/css?family=Lato:400,900");
         @import url("https://necolas.github.io/normalize.css/3.0.2/normalize.css");
 
-       body {background-image: url("images/background-image.png");/*background-color: #2C3E50*/; margin-left: 80px; margin-right: 75px; font-family: Lato; color: darkslategray}
+        iframe { display: none; }
+        body {background-image: url("images/background-image.png");/*background-color: #2C3E50*/; margin-left: 80px; margin-right: 75px; font-family: Lato; color: darkslategray}
         a {text-decoration: none; color:#3498db;}
         h1 {font-size: 35px; text-align: center;}
         .template { display: none; }
@@ -278,7 +280,7 @@
         .selectColor.selected {border-color: #FAD46B; }
         #view-mode .main {font-weight: bold;}
         #guess-answer-container, #correct-answer-container { margin: 12px 0 12px 10px; }
-        #correct-answer-container label { color:#3498db; }
+        #correct-answer-container label { color: #FAD46B; }
         #details { position: fixed; top: 0; bottom: 0; left: 0; right: 0; display: none; background: rgba(255, 255, 255, 0.85); }
         #selected { clear: both; }
         #details #details-container p { text-align: center; line-height: 0%; margin-bottom: 20px; }
