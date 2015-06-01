@@ -230,7 +230,9 @@
                 });
                 var initial = atob(location.hash.substr(1));
                 if (initial) {
-                    $('body').append($('<iframe src="notion:\/\/' + location.hash.substr(1) + '"><\/iframe>'));
+                    if (window.navigator.userAgent.match(/(iPad|iPhone|iPod)/g)) {
+                        $('body').append($('<iframe src="notion:\/\/' + location.hash.substr(1) + '"><\/iframe>'));
+                    }
                     var data = initial.split(mainSeparator);
                     var pos = 0;
                     items.answer = data[pos++];
