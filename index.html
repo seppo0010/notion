@@ -2,6 +2,7 @@
 <html>
     <head>
         <title>notion</title>
+        <meta charset="UTF-8">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
         <script src="https://twitter.github.com/hogan.js/builds/3.0.1/hogan-3.0.1.js"></script>
         <!-- JavaScript-MD5 is licensed under MIT license. See https://github.com/blueimp/JavaScript-MD5 -->
@@ -254,9 +255,10 @@
         @import url("https://necolas.github.io/normalize.css/3.0.2/normalize.css");
 
         iframe { display: none; }
-        body {background-image: url("images/background-image.png");/*background-color: #2C3E50*/; margin-left: 80px; margin-right: 75px; font-family: Lato; color: darkslategray}
+        body {background-image: url("images/background-image.png"); margin: auto; font-family: Lato; color: darkslategray;}
         a {text-decoration: none; color:#3498db;}
-        h1 {font-size: 35px; text-align: center;}
+        a#spanish-version {text-align: right;}
+        h1 {font-size: 35px; text-align: center; margin: 5px 0px 5px 0px;}
         .template { display: none; }
         .main-container { display: none; width: 940px; margin: 0 auto; }
         .item { margin: 10px 10px 0 0;border-radius: 10px; background-color:#FAD46B; width: 200px; text-align: left; padding: 10px; float: left; height: 174px; position: relative; }
@@ -280,61 +282,60 @@
         .color4 .selectColor.color4 { border-color: #FAD46B; }
         .main4 .selectColor.color4, .color4 .selectColor.color4 { background: #8D608C; }
         .selectColor.selected {border-color: #FAD46B; }
-        #view-mode .main {font-weight: bold;}
+        #view-mode .main {color: whitesmoke; font-size: 17px;}
         #guess-answer-container, #correct-answer-container { margin: 12px 0 12px 10px; }
-        #correct-answer-container label { color: #FAD46B; }
-        #details { position: fixed; top: 0; bottom: 0; left: 0; right: 0; display: none; background: rgba(255, 255, 255, 0.85); }
+        #correct-answer-container label { font-size: 16px; color: darkslategray; margin-right: 15px; }
         #selected { clear: both; }
-        #details #details-container p { text-align: center; line-height: 0%; margin-bottom: 20px; }
-        #details #details-container { width: 300px; margin: 20px auto; position: relative; padding-top: 20px; }
+        #details { position: fixed; padding:50px; top: 0; bottom: 0; left: 0; right: 0; display: none; background: rgba(0,0,0,0.25); }     
+        #details #details-container { height: 430px; width: 430px; position: relative; padding: 20px; border-radius: 30px; background-color: white; transform: translateY(50%); top: 50%; margin: auto; text-align: center;}
+        #details #details-container p {font-size: 18px; line-height: 0%; margin-bottom:20px; }
         #details #details-container img { margin: 20px auto; display: block; }
-        #details #details-container #details-close { display: block; position: absolute; right: 0; top: 10px; text-decoration: none; color: black; border: 1px solid black; border-radius: 20%; padding: 2px 6px; }
+        #details #details-container #details-close { display: block; position: absolute; right: 15px; top: 10px; text-decoration: none; color: darkslategray; border: 2px solid darkslategray; border-radius: 50%; padding: 4px 9px; }
 
         .collection { float: left; padding-bottom: 12px; }
         .collection .item { clear: both; }
 
-        .collection.color1 .item { background: #48929B; color: white; }
-        .collection.color2 .item { background: #E68364; color: white; }
-        .collection.color3 .item { background: #87D37C; color: white; }
-        .collection.color4 .item { background: #8D608C; color: white; }
+        .collection.color1 .item { background: #48929B;}
+        .collection.color2 .item { background: #E68364;}
+        .collection.color3 .item { background: #87D37C;}
+        .collection.color4 .item { background: #8D608C;}
         #top-stuff { width:910px; margin: 0 auto; padding: 0 30px 0 0; }
-        #stuff { padding: 10px; background-color: #9DC6D8; border-radius: 0px 0px 12px 12px; }
+        #stuff { padding: 10px 50px 20px 50px; background-color: #9DC6D8; text-align: justify; }
         body.spanish .english { display: none; }
         body.english .spanish { display: none; }
+
+        input { height: 35px; width: 200px; border-radius: 30px; cursor: auto;border-width: 0px; border-style: none; border-color: none; outline-offset: 0px; outline: none; padding: 0px 10px 0px 10px;font-family: lato; font-size: 16px; margin-left: -10px;}        
+        input[type="submit"] { height: 35px; width: 210px; border-radius: 30px; background-color: #3498db; color: white; padding: 2px 5px 2px 5px; cursor: pointer; margin-left: 10px;}
+
         .answer-container { margin: 4px 12px; }
         #search-container { float: right; margin: 0 30px 0 0; }
         </style>
+    
     </head>
     <body class="spanish english">
         <div id="top-stuff">
         <div id="stuff">
             <p>
                 <a href="javascript:void(null)" class="spanish" id="english-version">English Version</a>
-                <a href="javascript:void(null)" class="english" id="spanish-version">Versi&oacute;n en Espa&ntilde;ol</a>
+                <a href="javascript:void(null)" class="english" id="spanish-version">Versión en Español</a>
             </p>
+            
             <span class="spanish">
-            El objetivo del juego es representar un concepto con una serie de
-            iconos.<br />
-            Por ejemplo, para que adivinar "leche" se puede elegir como idea
-            principal l&iacute;quido, y soportarlo con "comestible" y "blanco".
-            Para un concepto m&aacute;s complicado como "Leonardo DiCaprio",
-            se puede usar un concepto principal y sub-conceptos tal como
-            pel&iacute;culas en las que actu&oacute; como Titanic e Inception.<br />
-            La primer imagen de cada categor&iacute;a indica el concepto principal.<br />
-            El juego est&aacute; basado en
+            El objetivo del juego es representar un concepto con una serie de imágenes.<br />
+            Pueden utilizarse hasta 4 categorías para describir nuestra idea. Cada  círculo de color representa una categoría. Pueden incluirse la cantidad de imágenes que sean necesarias para completar la descripción en una categoría. Al avanzar a <strong>Modo Adivinar</strong> podremos observar todas las imágenes incluidas en cada categoría alineadas por color. La primer imagen de cada categoría indica el concepto principal, las que continuan hacia abajo en esa misma columna y color complementan esa idea. <br>
+            Por ejemplo, para que adivinar "leche" se puede elegir como idea principal líquido, y soportarlo con "comestible" y "blanco". Para un concepto más complicado como "Leonardo DiCaprio", se puede usar un concepto principal y sub-conceptos tal como pelíulas en las que actuó como Titanic e Inception.<br />
+            El juego está basado en 
             <a href="http://boardgamegeek.com/boardgame/147151/concept" target="_blank">Concept</a>.
-            Si le gusta este juego, le recomiendo comprar una copia. Yo definitivamente tengo la m&iacute;a!
+            Si le gusta este juego, le recomiendo comprar una copia. Yo definitivamente tengo la mía!
             </span>
             <span class="english">
-            To get others to guess "milk", for example, the team might place
-            the question mark icon (which signifies the main concept) on the
-            liquid icon, then cubes of this color on the icons for "food/drink"
-            and "white". For a more complicated concept, such as
-            "Leonardo DiCaprio", the team can use the main concept and its
-            matching cubes to clue players into the hidden phrase being an
-            actor or director, while then using sub-concept icons and their
-            matching cubes to gives clues to particular movies in which
-            DiCaprio starred, such as Titanic or Inception.<br />
+            The goal of the game is represent a concept with a series of images. <br />
+            They can be used up to 4 categories to describe your idea. Each colored circle represents a category. In a category it can be included the necessary  number of images to complete the description. 
+            Going to <strong> Guessing Mode </strong > you can see all the pictures in each category lined up by color. The first image of each category indicates the main concept , images down the same column 
+            and color complement that idea. <br>
+            To get others to guess "milk", for example, the team might place the question mark icon (which signifies the main concept) on the liquid icon, then cubes of this color on the icons for "food/drink" 
+            and "white". For a more complicated concept, such as "Leonardo DiCaprio", the team can use the main concept and its matching cubes to clue players into the hidden phrase being an
+            actor or director, while then using sub-concept icons and their matching cubes to gives clues to particular movies in which DiCaprio starred, such as Titanic or Inception.<br />
             The game is based off
             <a href="http://boardgamegeek.com/boardgame/147151/concept" target="_blank">Concept</a>.
             If you like this game, I recommend you to get a copy. I sure got mine!
